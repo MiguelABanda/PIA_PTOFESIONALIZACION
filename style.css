@@ -66,3 +66,41 @@ body {
     font-weight: bold;
     border-radius: 5px;
 }
+
+.btn-cortex {
+    /* Estructura y Espaciado */
+    padding: 14px 32px;
+    cursor: pointer;
+    display: inline-block;
+    
+    /* Tipografía Formal */
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase; /* Le da un toque más corporativo/serio */
+    letter-spacing: 1.2px;      /* Espaciado entre letras para legibilidad */
+    
+    /* Colores Base */
+    background-color: transparent; /* Fondo transparente para un look "Ghost Button" */
+    color: #0a192f;                /* Texto azul oscuro profundo */
+    border: 2px solid #0a192f;     /* Borde sólido */
+    
+    /* Animación Suave */
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Efecto Hover (Al pasar el mouse) */
+.btn-cortex:hover {
+    background-color: #0a192f; /* El fondo se llena del color del borde */
+    color: #ffffff;            /* El texto cambia a blanco para contrastar */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1); /* Sombra muy sutil */
+    transform: translateY(-1px); /* Elevación casi imperceptible */
+}
+
+/* Efecto Active (Al hacer clic) */
+.btn-cortex:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
