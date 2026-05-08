@@ -15,86 +15,101 @@
                 <li><a href="productos.html">Productos</a></li>
                 <li><a href="nosotros.html">Nosotros</a></li>
                 <li><a href="contacto.html">Contacto</a></li>
+                <li><a href="carrito.html" style="color: var(--accent);">🛒 Mi Carrito</a></li>
             </ul>
         </nav>
     </header>
 
     <main class="container">
-        <section class="section-title">
+        <section class="section-title" style="text-align: center; padding: 2rem 0;">
             <h1>Catálogo de Componentes</h1>
             <p>Seleccionamos solo hardware de grado entusiasta para tu próximo ensamble.</p>
         </section>
 
+        <!-- Fila 1 -->
         <div class="product-grid">
             <div class="card">
                 <div class="badge">Nuevo</div>
-                <img src="../RTX5080.jpg" alt="NVIDIA RTX 5080">
+                <img src="../RTX5080.jpg" alt="NVIDIA RTX 5080" style="width:100%; border-radius: 5px;">
                 <h3>NVIDIA RTX 5080</h3>
                 <p>Arquitectura de nueva generación para Ray Tracing extremo.</p>
                 <span class="price">$1,199.00</span> <br>
-                <button class="btn-cortex">Añadir al carrito</button>
+                <button class="btn-cortex" data-id="1" data-nombre="NVIDIA RTX 5080" data-precio="1199">Añadir al carrito</button>
             </div>
+
             <div class="card">
-                <img src="../INTERCOREI9.jpg" alt="">
+                <img src="../INTERCOREI9.jpg" alt="i9" style="width:100%; border-radius: 5px;">
                 <h3>Intel Core i9-15900K</h3>
                 <p>24 núcleos de puro rendimiento multihilo.</p>
                 <span class="price">$589.00</span> <br>
-                <button class="btn-cortex">Añadir al carrito</button>
+                <button class="btn-cortex" data-id="2" data-nombre="Intel Core i9-15900K" data-precio="589">Añadir al carrito</button>
             </div>
+
             <div class="card">
-                <img src="../DDR56400MHz.jpg" alt="RAM">
+                <img src="../DDR56400MHz.jpg" alt="RAM" style="width:100%; border-radius: 5px;">
                 <h3>DDR5 64GB 6400MHz</h3>
                 <p>Latencia ultra baja para flujos de trabajo pesados.</p>
                 <span class="price">$210.00</span> <br>
-                <button class="btn-cortex">Añadir al carrito</button>
+                <button class="btn-cortex" data-id="3" data-nombre="DDR5 64GB 6400MHz" data-precio="210">Añadir al carrito</button>
             </div>
         </div>
+
+        <!-- Fila 2 -->
         <div class="product-grid">
             <div class="card">
-                <img src="../intelcorei7.jpg" alt="RAM">
+                <img src="../intelcorei7.jpg" alt="i7" style="width:100%; border-radius: 5px;">
                 <h3>Intel Core i7-14700</h3>
-                <p>Hasta 5.6 GHz de velocidad para tareas pesadas de productividad.</p>
-                <span class="price">$3000.00</span> <br>
-                <button class="btn-cortex">Añadir al carrito</button>
+                <p>Hasta 5.6 GHz de velocidad para tareas pesadas.</p>
+                <span class="price">$3,000.00</span> <br>
+                <button class="btn-cortex" data-id="4" data-nombre="Intel Core i7-14700" data-precio="3000">Añadir al carrito</button>
             </div>
+
             <div class="card">
-                <img src="../RTX4070.jpg" alt="RAM">
+                <img src="../RTX4070.jpg" alt="4070" style="width:100%; border-radius: 5px;">
                 <h3>NVIDIA RTX 4070 Super</h3>
-                <p>Diseño Gaming X Slim, encaja perfecto con la estética "formal y limpia".</p>
-                <span class="price">$2500.00</span> </br>
-                <button class="btn-cortex">Añadir al carrito</button>
+                <p>Diseño Gaming X Slim, estética formal y limpia.</p>
+                <span class="price">$2,500.00</span> <br>
+                <button class="btn-cortex" data-id="5" data-nombre="NVIDIA RTX 4070 Super" data-precio="2500">Añadir al carrito</button>
             </div>
+
             <div class="card">
-                <img src="/Samsung.jpg" alt="RAM">
-                <h3>Samsung 990 Pro de 2TB</h3>
-                <p>Velocidades de lectura de hasta 7,450 MB/s, ideal para reducir tiempos de carga al minimo.</p>
-                <span class="price">$5000.00</span><br>
-                <button class="btn-cortex">Añadir al carrito</button>
+                <img src="/Samsung.jpg" alt="SSD" style="width:100%; border-radius: 5px;">
+                <h3>Samsung 990 Pro 2TB</h3>
+                <p>Velocidades de lectura de hasta 7,450 MB/s.</p>
+                <span class="price">$5,000.00</span><br>
+                <button class="btn-cortex" data-id="6" data-nombre="Samsung 990 Pro 2TB" data-precio="5000">Añadir al carrito</button>
             </div>
         </div>
+
+        <!-- Fila 3 -->
         <div class="product-grid">
             <div class="card">
-                <img src="/DeepCool.jpg" alt="RAM">
+                <img src="/DeepCool.jpg" alt="Case" style="width:100%; border-radius: 5px;">
                 <h3>DeepCool CH510 MESH DIGITAL</h3>
-                <p>Pantalla digital integrada, que muestra temperatura en tiempo real.</p>
-                <span class="price">$2300.00</span><br>
-                <button class="btn-cortex">Añadir al carrito</button>
+                <p>Pantalla digital integrada con temperatura en tiempo real.</p>
+                <span class="price">$2,300.00</span><br>
+                <button class="btn-cortex" data-id="7" data-nombre="DeepCool CH510 MESH DIGITAL" data-precio="2300">Añadir al carrito</button>
             </div>
+
             <div class="card">
-                <img src="/Enfriamiento.jpg" alt="RAM">
+                <img src="/Enfriamiento.jpg" alt="AIO" style="width:100%; border-radius: 5px;">
                 <h3>NZXT Kraken 360 RGB</h3>
-                <p>Pantalla LCD personalizable, te permite darle un toque unico a tu ensamble.</p>
-                <span class="price">$3200.00</span> <br>
-                <button class="btn-cortex">Añadir al carrito</button>
+                <p>Pantalla LCD personalizable para un toque único.</p>
+                <span class="price">$3,200.00</span> <br>
+                <button class="btn-cortex" data-id="8" data-nombre="NZXT Kraken 360 RGB" data-precio="3200">Añadir al carrito</button>
             </div>
+
             <div class="card">
-                <img src="/fuentedepoder.jpg" alt="RAM">
+                <img src="/fuentedepoder.jpg" alt="PSU" style="width:100%; border-radius: 5px;">
                 <h3>Corsair RM850x Gold</h3>
-                <p>Eficiencia 80 plus Gold y un funcionamiento silencioso.</p>
-                <span class="price">$3200.00</span> <br>
-                <button class="btn-cortex">Añadir al carrito</button>
+                <p>Eficiencia 80 plus Gold y funcionamiento silencioso.</p>
+                <span class="price">$3,200.00</span> <br>
+                <button class="btn-cortex" data-id="9" data-nombre="Corsair RM850x Gold" data-precio="3200">Añadir al carrito</button>
             </div>
         </div>
     </main>
+
+    <!-- Script de lógica de carrito -->
+    <script src="cart.js"></script>
 </body>
 </html>

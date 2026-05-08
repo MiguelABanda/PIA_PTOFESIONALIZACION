@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tu Carrito | Cortex Systems</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Estilos específicos para la tabla de checkout */
+        .cart-table { width: 100%; border-collapse: collapse; margin-top: 2rem; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .cart-table th { background: #0a192f; color: white; padding: 15px; text-transform: uppercase; font-size: 0.85rem; }
+        .cart-table td { padding: 15px; border-bottom: 1px solid #eee; text-align: center; }
+        .qty-btn { padding: 5px 10px; cursor: pointer; border: 1px solid #ddd; background: #f8f9fa; font-weight: bold; }
+        .delete-btn { background: #ff4d4d; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; transition: 0.3s; }
+        .delete-btn:hover { background: #cc0000; }
+        .total-container { text-align: right; margin-top: 2rem; padding: 2rem; background: white; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">CORTEX<span>SYSTEMS</span></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="productos.html">Productos</a></li>
+                <li><a href="nosotros.html">Nosotros</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <h1 style="margin-top: 2rem;">Resumen de Compra</h1>
+        
+        <div id="carrito-status" style="display:none; text-align: center; padding: 3rem;">
+            <h3>Tu carrito está vacío.</h3>
+            <a href="productos.html" class="btn" style="display:inline-block; margin-top:1rem;">Ir a la tienda</a>
+        </div>
+
+        <table id="tabla-render" class="cart-table">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio</th>
+                    <th>Subtotal</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody id="items-carrito">
+                <!-- Inyección vía JS -->
+            </tbody>
+        </table>
+
+        <div class="total-container" id="control-panel">
+            <h2>Total a Pagar: <span id="monto-total" style="color: #0a192f;">$0.00</span></h2>
+            <button class="btn" onclick="vaciarTodo()" style="background: #6c757d; margin-right: 10px;">Limpiar Carrito</button>
+            <button class="btn" onclick="procesarCompra()" style="background: #28a745;">Finalizar Pedido</button>
+        </div>
+
+    </main>
+
+    <script>
+        function cargarCarrito() {
+            const lista = document.getElementById('items-carrito');
+            const totalDisplay = document.getElementById('monto-total');
+            const tabla = document.getElementById('tabla-render');
+            const status = document.getElementById('carrito-status');
+            const panel = document.getElementById('control-panel');
+            
+            let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+            let totalGeneral = 0;
+
+            lista.innerHTML = '';
+
+            if (carrito.length === 0) {
+                tabla.style.display = 'none';
+                panel.style.display = 'none';
+                status.style.display = 'block';
+                return;
+            }
+
+            tabla.style.display = 'table';
+            panel.style.display = 'block';
+            status.style.display = 'none';
+
+            carrito.forEach(item => {
+                const subtotal = item.precio * item.cantidad;
+                totalGeneral += subtotal;
+
+                lista.innerHTML += `
+                    <tr>
+                        <td style="font-weight: 600;">${item.nombre}</td>
+                        <td>
+                            <button class="qty-btn" onclick="actualizar('${item.id}', -1)">-</button>
+                            <span style="margin: 0 10px;">${item.cantidad}</span>
+                            <button class="qty-btn" onclick="actualizar('${item.id}', 1)">+</button>
+                        </td>
+                        <td>$${item.precio.toLocaleString()}</td>
+                        <td style="font-weight: bold;">$${subtotal.toLocaleString()}</td>
+                        <td>
+                            <button class="delete-btn" onclick="eliminar('${item.id}')">Quitar</button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            totalDisplay.innerText = `$${totalGeneral.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+        }
+
+        function procesarCompra() {
+            localStorage.removeItem('carrito');
+            window.location.href = 'confirmacion.html';
+        }
+        function actualizar(id, operacion) {
+            let carrito = JSON.parse(localStorage.getItem('carrito'));
+            const index = carrito.findIndex(i => i.id === id);
+            
+            if (index !== -1) {
+                carrito[index].cantidad += operacion;
+                if (carrito[index].cantidad <= 0) {
+                    carrito.splice(index, 1);
+                }
+            }
+            
+            localStorage.setItem('carrito', JSON.stringify(carrito));
+            cargarCarrito();
+        }
+
+        function eliminar(id) {
+            let carrito = JSON.parse(localStorage.getItem('carrito'));
+            const nuevoCarrito = carrito.filter(item => item.id !== id);
+            localStorage.setItem('carrito', JSON.stringify(nuevoCarrito));
+            cargarCarrito();
+        }
+
+        function vaciarTodo() {
+            if(confirm("¿Seguro que quieres borrar todo?")) {
+                localStorage.removeItem('carrito');
+                cargarCarrito();
+            }
+        }
+
+        // Ejecutar al cargar la página
+        document.addEventListener('DOMContentLoaded', cargarCarrito);
+    </script>
+</body>
+</html>
