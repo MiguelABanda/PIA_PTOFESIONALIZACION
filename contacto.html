@@ -21,26 +21,37 @@
     </header>
 
     <main class="container">
-        <div class="contact-wrapper">
-            <div class="contact-info">
-                <h2>Ponte en contacto</h2>
-                <p>¿Tienes dudas sobre compatibilidad o necesitas una cotización empresarial?</p>
-                <p><strong>Ubicación:</strong> Monterrey, N.L., México</p>
-                <p><strong>Email:</strong> soporte@cortexsystems.tech</p>
+        <section style="text-align: center; padding-top: 3rem;">
+            <h1 style="color: var(--primary); font-size: 2.2rem; margin-bottom: 10px;">Contáctanos</h1>
+            <p style="color: #555; font-size: 1.1rem;">Estamos listos para asesorarte en tu próximo ensamble.</p>
+        </section>
+
+        <div class="contact-grid">
+            <div class="contact-form">
+                <h3>Envíanos un mensaje</h3>
+                <!-- Formulario simplificado sin action ni method -->
+                <form id="whatsapp-form">
+                    <input type="text" id="nombre" placeholder="Tu Nombre Completo" required>
+                    <input type="email" id="email" placeholder="Tu Correo Electrónico" required>
+                    <input type="text" id="asunto" placeholder="Asunto (Ej. Cotización, Soporte)" required>
+                    <textarea id="mensaje" rows="5" placeholder="¿En qué te podemos ayudar?" required></textarea>
+                    <button type="submit" class="btn-cortex">Enviar a WhatsApp</button>
+                </form>
             </div>
 
-            <form class="contact-form">
-                <input type="text" placeholder="Nombre completo" required>
-                <input type="email" placeholder="Correo electrónico" required>
-                <select>
-                    <option>Consulta Técnica</option>
-                    <option>Ventas al mayoreo</option>
-                    <option>Garantías</option>
-                </select>
-                <textarea placeholder="¿En qué podemos ayudarte?" rows="5"></textarea>
-                <button type="submit" class="btn">Enviar Mensaje</button>
-            </form>
+            <div class="contact-info">
+                <h3>Atención al Cliente</h3>
+                <p>Nuestros ingenieros revisarán tu solicitud y responderán a la brevedad posible.</p>
+                <br>
+                <p><strong>📍 Sede:</strong> Monterrey, N.L.</p>
+                <p><strong>📧 Email:</strong> soporte@cortexsystems.com</p>
+                <p><strong>📞 WhatsApp:</strong> +52 81 1346 5800</p>
+                <p><strong>🕒 Horario:</strong> Lunes a Viernes, 9:00 AM - 6:00 PM</p>
+            </div>
         </div>
     </main>
+
+    <!-- Asegúrate que este archivo exista en la misma carpeta -->
+    <script src="contacto.js"></script>
 </body>
 </html>
