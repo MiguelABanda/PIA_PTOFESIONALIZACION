@@ -4,33 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tu Carrito | Cortex Systems</title>
-    <!-- Enlace al archivo principal de estilos -->
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Estilos específicos para la tabla de checkout (internos para no saturar style.css) */
-        /* Contenedor principal de la tabla: ancho completo y bordes redondeados */
+        /* Estilos específicos para la tabla y el resumen */
         .cart-table { width: 100%; border-collapse: collapse; margin-top: 2rem; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        /* Encabezados de la tabla: fondo oscuro, texto blanco y mayúsculas */
         .cart-table th { background: #0a192f; color: white; padding: 15px; text-transform: uppercase; font-size: 0.85rem; }
-        /* Celdas normales: texto centrado y línea separadora inferior */
         .cart-table td { padding: 15px; border-bottom: 1px solid #eee; text-align: center; }
-        /* Botones de + y - para la cantidad */
+        
         .qty-btn { padding: 5px 10px; cursor: pointer; border: 1px solid #ddd; background: #f8f9fa; font-weight: bold; }
-        /* Botón rojo para quitar un producto específico */
         .delete-btn { background: #ff4d4d; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; transition: 0.3s; }
         .delete-btn:hover { background: #cc0000; }
-        /* Caja donde se muestra el Total a pagar y los botones finales */
+        
         .total-container { text-align: right; margin-top: 2rem; padding: 2rem; background: white; border-radius: 8px; }
+        .iva-text { color: #666; font-size: 0.9rem; display: block; }
     </style>
 </head>
 <body>
     <header>
-        <!-- Barra de navegación principal -->
         <nav class="navbar">
-            <div class="logo">
-                <img src="CORTEXSYSTEM.jpg" alt="Logo Cortex Systems" class="logo-icon">
-                CORTEX<span>SYSTEMS</span>
-            </div>
+            <div class="logo">CORTEX<span>SYSTEMS</span></div>
             <ul class="nav-links">
                 <li><a href="index.html">Inicio</a></li>
                 <li><a href="productos.html">Productos</a></li>
@@ -43,55 +35,50 @@
     <main class="container">
         <h1 style="margin-top: 2rem;">Resumen de Compra</h1>
         
-        <!-- Mensaje que se muestra SOLO si el carrito no tiene productos -->
         <div id="carrito-status" style="display:none; text-align: center; padding: 3rem;">
             <h3>Tu carrito está vacío.</h3>
             <a href="productos.html" class="btn" style="display:inline-block; margin-top:1rem;">Ir a la tienda</a>
         </div>
 
-        <!-- Tabla donde se inyectan los productos agregados -->
         <table id="tabla-render" class="cart-table">
             <thead>
                 <tr>
                     <th>Producto</th>
                     <th>Cantidad</th>
-                    <th>Precio</th>
-                    <th>Subtotal</th>
+                    <th>Precio Base</th>
+                    <th>IVA (16%)</th>
+                    <th>Subtotal (Con IVA)</th>
                     <th>Acción</th>
                 </tr>
             </thead>
-            <!-- El contenido (<tbody>) se llena dinámicamente con JavaScript -->
             <tbody id="items-carrito">
-            </tbody>
+                </tbody>
         </table>
 
-        <!-- Panel final con el monto total y botones de acción -->
         <div class="total-container" id="control-panel">
             <h2>Total a Pagar: <span id="monto-total" style="color: #0a192f;">$0.00</span></h2>
+            <p style="color: #666; font-size: 0.9rem;">El total a pagar ya incluye IVA</p>
+            <br>
             <button class="btn" onclick="vaciarTodo()" style="background: #6c757d; margin-right: 10px;">Limpiar Carrito</button>
             <button class="btn" onclick="procesarCompra()" style="background: #28a745;">Finalizar Pedido</button>
         </div>
-
     </main>
 
     <script>
-        // Función principal: Lee la memoria y dibuja la tabla
+        const TASA_IVA = 0.16;
+
         function cargarCarrito() {
-            // Referencias a los elementos HTML
             const lista = document.getElementById('items-carrito');
             const totalDisplay = document.getElementById('monto-total');
             const tabla = document.getElementById('tabla-render');
             const status = document.getElementById('carrito-status');
             const panel = document.getElementById('control-panel');
             
-            // Obtiene los datos de la memoria del navegador (localStorage)
             let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
             let totalGeneral = 0;
 
-            // Limpia la tabla antes de volver a pintarla
             lista.innerHTML = '';
 
-            // Si no hay productos, oculta la tabla y muestra el mensaje de "vacío"
             if (carrito.length === 0) {
                 tabla.style.display = 'none';
                 panel.style.display = 'none';
@@ -99,17 +86,18 @@
                 return;
             }
 
-            // Si hay productos, muestra la tabla y oculta el mensaje
             tabla.style.display = 'table';
             panel.style.display = 'block';
             status.style.display = 'none';
 
-            // Recorre cada producto guardado para crear su fila en HTML
             carrito.forEach(item => {
-                const subtotal = item.precio * item.cantidad; // Calcula el costo por artículo
-                totalGeneral += subtotal; // Suma al total a pagar
+                // Cálculos
+                const ivaTotalLinea = (item.precio * TASA_IVA) * item.cantidad;
+                const precioConIva = item.precio * (1 + TASA_IVA);
+                const subtotal = precioConIva * item.cantidad;
 
-                // Inyecta el HTML de la fila en la tabla
+                totalGeneral += subtotal;
+
                 lista.innerHTML += `
                     <tr>
                         <td style="font-weight: 600;">${item.nombre}</td>
@@ -118,8 +106,9 @@
                             <span style="margin: 0 10px;">${item.cantidad}</span>
                             <button class="qty-btn" onclick="actualizar('${item.id}', 1)">+</button>
                         </td>
-                        <td>$${item.precio.toLocaleString()}</td>
-                        <td style="font-weight: bold;">$${subtotal.toLocaleString()}</td>
+                        <td>$${item.precio.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+                        <td style="color: #666;">$${ivaTotalLinea.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+                        <td style="font-weight: bold;">$${subtotal.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
                         <td>
                             <button class="delete-btn" onclick="eliminar('${item.id}')">Quitar</button>
                         </td>
@@ -127,51 +116,42 @@
                 `;
             });
 
-            // Muestra el total formateado con 2 decimales
             totalDisplay.innerText = `$${totalGeneral.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
         }
 
-        // Función para simular el pago y redirigir
-        function procesarCompra() {
-            localStorage.removeItem('carrito'); // Borra la memoria
-            window.location.href = 'confirmacion.html'; // Manda a la página de éxito
-        }
-
-        // Función para sumar (+1) o restar (-1) la cantidad de un producto
         function actualizar(id, operacion) {
             let carrito = JSON.parse(localStorage.getItem('carrito'));
-            const index = carrito.findIndex(i => i.id === id); // Busca el producto exacto
+            const index = carrito.findIndex(i => i.id === id);
             
             if (index !== -1) {
-                carrito[index].cantidad += operacion; // Suma o resta
-                // Si la cantidad llega a 0, lo quita del carrito
+                carrito[index].cantidad += operacion;
                 if (carrito[index].cantidad <= 0) {
                     carrito.splice(index, 1);
                 }
             }
-            
-            localStorage.setItem('carrito', JSON.stringify(carrito)); // Guarda los cambios
-            cargarCarrito(); // Vuelve a dibujar la tabla
+            localStorage.setItem('carrito', JSON.stringify(carrito));
+            cargarCarrito();
         }
 
-        // Función para borrar un producto específico sin importar la cantidad
         function eliminar(id) {
             let carrito = JSON.parse(localStorage.getItem('carrito'));
-            // Crea una nueva lista excluyendo el producto seleccionado
             const nuevoCarrito = carrito.filter(item => item.id !== id);
             localStorage.setItem('carrito', JSON.stringify(nuevoCarrito));
-            cargarCarrito(); // Vuelve a dibujar la tabla
+            cargarCarrito();
         }
 
-        // Función para borrar todo el carrito de golpe
         function vaciarTodo() {
-            if(confirm("¿Seguro que quieres borrar todo?")) { // Pide confirmación al usuario
+            if(confirm("¿Deseas vaciar todos los productos del carrito?")) {
                 localStorage.removeItem('carrito');
                 cargarCarrito();
             }
         }
 
-        // Evento que ejecuta cargarCarrito() en cuanto la página termina de cargar
+        function procesarCompra() {
+            localStorage.removeItem('carrito');
+            window.location.href = 'confirmacion.html';
+        }
+
         document.addEventListener('DOMContentLoaded', cargarCarrito);
     </script>
 </body>
